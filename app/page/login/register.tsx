@@ -3,6 +3,7 @@
 import Image from "next/image";
 import type { FormEvent } from "react";
 import { useState } from "react";
+import { Alert, AlertDescription } from "@/app/components/ui/alert";
 
 type Mode = "login" | "register";
 
@@ -210,13 +211,15 @@ export default function AuthPage() {
               </div>
 
               {error && (
-                <p className="text-sm font-medium text-red-500">{error}</p>
+                <Alert variant="destructive">
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
               )}
 
               {success && (
-                <p className="text-sm font-medium text-emerald-500">
-                  {success}
-                </p>
+                <Alert variant="success">
+                  <AlertDescription>{success}</AlertDescription>
+                </Alert>
               )}
 
               <button
