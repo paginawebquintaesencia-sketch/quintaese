@@ -423,10 +423,10 @@ export default function OnboardingPage() {
                     <button
                       type="button"
                       onClick={() =>
-                        setContribution("formador-talleres-mentorías" as ContributionOption)
+                        setContribution("formador-talleres-mentorias")
                       }
                       className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        contribution === "formador-talleres-mentorías"
+                        contribution === "formador-talleres-mentorias"
                           ? "border-neutral-900 bg-neutral-900 text-white"
                           : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
                       }`}
