@@ -1,4 +1,5 @@
 import { initializeApp, getApp, getApps } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import type { Analytics } from "firebase/analytics";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
@@ -13,6 +14,7 @@ const firebaseConfig = {
 };
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+export const auth = getAuth(app);
 
 let analyticsPromise: Promise<Analytics | null> | null = null;
 

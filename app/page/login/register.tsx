@@ -4,6 +4,12 @@ import Image from "next/image";
 import type { FormEvent } from "react";
 import { useState } from "react";
 import { Alert, AlertDescription } from "@/app/components/ui/alert";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 type Mode = "login" | "register";
 
@@ -51,15 +57,39 @@ export default function AuthPage() {
     setLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
       if (mode === "login") {
-        setSuccess("Inicio de sesión simulado correctamente.");
+        await signInWithEmailAndPassword(auth, email, password);
+        setSuccess("¡Bienvenido de nuevo!");
       } else {
-        setSuccess("Registro simulado correctamente.");
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password,
+        );
+        await updateProfile(userCredential.user, { displayName: name });
+        setSuccess("Cuenta creada exitosamente.");
       }
-    } catch {
-      setError("Ha ocurrido un error inesperado. Inténtalo de nuevo.");
+    } catch (err: any) {
+      console.error("Auth error:", err);
+      if (err.code === "auth/email-already-in-use") {
+        setError("Este correo electrónico ya está registrado.");
+      } else if (
+        err.code === "auth/wrong-password" ||
+        err.code === "auth/user-not-found" ||
+        err.code === "auth/invalid-credential"
+      ) {
+        setError("Correo electrónico o contraseña incorrectos.");
+      } else if (err.code === "auth/weak-password") {
+        setError("La contraseña es muy débil.");
+      } else if (err.code === "auth/invalid-email") {
+        setError("El correo electrónico no es válido.");
+      } else if (err.code === "auth/too-many-requests") {
+        setError(
+          "Demasiados intentos fallidos. Por favor intenta más tarde.",
+        );
+      } else {
+        setError("Ha ocurrido un error inesperado. Inténtalo de nuevo.");
+      }
     } finally {
       setLoading(false);
     }
