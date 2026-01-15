@@ -310,7 +310,7 @@ export default function OnboardingPage() {
                             } as CSSProperties & { ["--theme-color"]?: string }
                           }
                           className={`
-                            group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-300 border-2
+                            group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-150 border-2
                             bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
                             hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.98]
                             animate-in fade-in zoom-in-50 fill-mode-backwards
@@ -382,8 +382,8 @@ export default function OnboardingPage() {
                               }
                             }
                             className={`
-                              group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-300 border-2
-                              bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
+                              group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-150 border-2
+                            bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
                               hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.98]
                               animate-in fade-in zoom-in-50 fill-mode-backwards
                               hover:border-[var(--theme-color)]
@@ -444,8 +444,8 @@ export default function OnboardingPage() {
                               }
                             }
                             className={`
-                              group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-300 border-2
-                              bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
+                              group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-150 border-2
+                            bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
                               hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.98]
                               animate-in fade-in zoom-in-50 fill-mode-backwards
                               hover:border-[var(--theme-color)]
@@ -567,8 +567,8 @@ export default function OnboardingPage() {
                               }
                             }
                             className={`
-                              group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-300 border-2
-                              bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
+                              group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-150 border-2
+                            bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
                               hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.98]
                               animate-in fade-in zoom-in-50 fill-mode-backwards
                               hover:border-[var(--theme-color)]
@@ -646,7 +646,7 @@ export default function OnboardingPage() {
                               }
                             }
                             className={`
-                              group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-300 border-2
+                              group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-150 border-2
                               bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
                               hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.98]
                               animate-in fade-in zoom-in-50 fill-mode-backwards

@@ -77,7 +77,7 @@ export default function AuthPage() {
         if (!onboardingCompleted) {
           router.push("/onboarding");
         } else {
-          setSuccess("¡Bienvenido de nuevo!");
+          router.push("/bienvenidos");
         }
       } else {
         const userCredential = await createUserWithEmailAndPassword(
