@@ -58,6 +58,13 @@ type ArtisticFocusOption =
 
 type Step = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
+const PALETTE = [
+  "#FC5E33", // Naranja
+  "#449EEE", // Azul claro
+  "#DD43A8", // Rosa
+  "#AB5CC9", // Morado
+];
+
 export default function OnboardingPage() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
@@ -236,763 +243,507 @@ export default function OnboardingPage() {
   const isFirstStep = step === 0;
   const isLastStep = step === 6;
 
+  const getColor = (index: number) => PALETTE[index % PALETTE.length];
+
   if (loadingUser) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-white">
-        <p className="text-sm text-neutral-500">Cargando tu experiencia...</p>
+      <div className="flex min-h-screen items-center justify-center bg-[#EAEAEA]">
+        <p className="text-sm text-[#222C47]/50">Cargando tu experiencia...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white px-4">
-      <div className={`w-full ${step === 6 ? "" : "max-w-md"}`}>
-        <div className="space-y-6 fade-slide">
-          {step !== 6 && (
-            <div className="mb-2 text-center">
-            <div className="flex justify-center">
-              <Image
-                src="/logo.png"
-                alt="Logo Quintaesencia"
-                width={220}
-                height={70}
-                priority
-              />
-            </div>
-            <h1 className="mt-4 text-2xl font-semibold text-neutral-900">
-              Queremos conocerte mejor
-            </h1>
-            <p className="mt-2 text-sm text-neutral-500">
-              Responde algunas preguntas rápidas para personalizar tu experiencia.
-            </p>
-            </div>
-          )}
+    <div className="relative flex h-screen flex-col bg-[#EAEAEA] text-[#222C47] overflow-hidden font-sans selection:bg-[#222C47] selection:text-white">
+      {/* Stories-like Progress Bar */}
+      <div className="absolute top-0 left-0 right-0 z-50 flex gap-1.5 p-4 sm:p-6">
+        {[0, 1, 2, 3, 4, 5, 6].map((s) => (
+          <div key={s} className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#222C47]/10 backdrop-blur-sm">
+            <div
+              className={`h-full transition-all duration-500 ease-out ${
+                s <= step ? "w-full" : "w-0"
+              }`}
+              style={{ backgroundColor: s <= step ? getColor(s) : 'transparent' }}
+            />
+          </div>
+        ))}
+      </div>
 
-          {step !== 6 && (
-            <div className="flex items-center justify-center gap-2 text-xs text-neutral-500">
-              <span
-                className={`h-1.5 w-6 rounded-full ${
-                  step >= 0 ? "bg-neutral-900" : "bg-neutral-200"
-                }`}
-              />
-              <span
-                className={`h-1.5 w-6 rounded-full ${
-                  step >= 1 ? "bg-neutral-900" : "bg-neutral-200"
-                }`}
-              />
-              <span
-                className={`h-1.5 w-6 rounded-full ${
-                  step >= 2 ? "bg-neutral-900" : "bg-neutral-200"
-                }`}
-              />
-              <span
-                className={`h-1.5 w-6 rounded-full ${
-                  step >= 3 ? "bg-neutral-900" : "bg-neutral-200"
-                }`}
-              />
-              <span
-                className={`h-1.5 w-6 rounded-full ${
-                  step >= 4 ? "bg-neutral-900" : "bg-neutral-200"
-                }`}
-              />
-              <span
-                className={`h-1.5 w-6 rounded-full ${
-                  step >= 5 ? "bg-neutral-900" : "bg-neutral-200"
-                }`}
-              />
-              <span
-                className={`h-1.5 w-6 rounded-full ${
-                  step >= 6 ? "bg-neutral-900" : "bg-neutral-200"
-                }`}
-              />
-            </div>
-          )}
-
-          <div className="space-y-6 rounded-3xl border border-neutral-100 bg-white p-5 shadow-sm">
+      {/* Main Content Area - Full Screen Centered */}
+      <div className="flex flex-1 flex-col items-center justify-center px-4 relative z-10 w-full max-w-7xl mx-auto h-full pb-20 pt-10">
+          
+          {/* Animated Container for Steps */}
+          <div className="w-full max-w-5xl animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
+              
               {step === 0 && (
-                <div className="space-y-4">
-                  <h2 className="text-base font-semibold text-neutral-900">
-                    ¿Cuál rol te describe mejor como artista en Quintaesencia?
+                <div className="space-y-6 text-center md:text-left h-full flex flex-col justify-center">
+                  <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-[#222C47] leading-[0.9]">
+                    ¿Cuál rol te <br/><span className="opacity-50">describe mejor</span>?
                   </h2>
-                  <div className="grid gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setArtistRole("artista-formador")}
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        artistRole === "artista-formador"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Artista Formador</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Quiero impartir talleres, clases o cursos.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setArtistRole("artista-quintaesencia")}
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        artistRole === "artista-quintaesencia"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Artista Quintaesencia</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Deseo formar parte activa de la galería y exposiciones.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setArtistRole("artista-colaborador")}
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        artistRole === "artista-colaborador"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Artista Colaborador</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Prefiero participar en eventos o contenidos puntuales.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setArtistRole("combinacion-roles")}
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        artistRole === "combinacion-roles"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Combinación de roles</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Por ejemplo, formador y colaborador.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setArtistRole("explorador-apreciador")}
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        artistRole === "explorador-apreciador"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Apreciador / Explorador</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Solo exploro como apreciador por ahora.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setArtistRole("otro-rol")}
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        artistRole === "otro-rol"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Otro rol</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Por ejemplo, mentor o coleccionista.
-                      </span>
-                    </button>
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                    {[
+                      { id: "artista-formador", label: "Artista Formador", desc: "Quiero impartir talleres." },
+                      { id: "artista-quintaesencia", label: "Artista Quintaesencia", desc: "Parte activa de la galería." },
+                      { id: "artista-colaborador", label: "Artista Colaborador", desc: "Eventos puntuales." },
+                      { id: "combinacion-roles", label: "Combinación de roles", desc: "Formador, colaborador..." },
+                      { id: "explorador-apreciador", label: "Apreciador / Explorador", desc: "Solo exploro." },
+                      { id: "otro-rol", label: "Otro rol", desc: "Mentor, coleccionista..." }
+                    ].map((option, index) => {
+                      const color = getColor(index);
+                      const isSelected = artistRole === option.id;
+                      return (
+                        <button
+                          key={option.id}
+                          type="button"
+                          onClick={() => setArtistRole(option.id as ArtistRole)}
+                          style={{
+                            backgroundColor: isSelected ? color : undefined,
+                            borderColor: isSelected ? color : undefined,
+                            color: isSelected ? "white" : "#222C47",
+                            boxShadow: isSelected ? `0 16px 40px -16px ${color}99` : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
+                            animationDelay: `${index * 50}ms`,
+                            ["--theme-color"]: color,
+                          }}
+                          className={`
+                            group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-300 border-2
+                            bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
+                            hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.98]
+                            animate-in fade-in zoom-in-50 fill-mode-backwards
+                            hover:border-[var(--theme-color)]
+                          `}
+                        >
+                          <span
+                            className={`text-sm md:text-base font-bold tracking-tight mb-0.5 text-left leading-tight group-hover:text-[var(--theme-color)] transition-colors ${isSelected ? "!text-white" : ""}`}
+                          >
+                            {option.label}
+                          </span>
+                          <span
+                            className={`text-[11px] md:text-xs font-medium text-left leading-tight opacity-80 group-hover:opacity-100 ${isSelected ? "text-white/90" : "text-[#222C47]/60"}`}
+                          >
+                            {option.desc}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                   {artistRole === "otro-rol" && (
-                    <div className="pt-2">
-                      <input
-                        type="text"
-                        value={otherRole}
-                        onChange={(event) => setOtherRole(event.target.value)}
-                        className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-xs outline-none transition focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900/60"
-                        placeholder="Especifica tu rol (mentor, coleccionista, etc.)"
-                      />
-                    </div>
+                    <input
+                      type="text"
+                      value={otherRole}
+                      onChange={(event) => setOtherRole(event.target.value)}
+                      className="w-full text-xl md:text-2xl font-bold bg-transparent border-b-2 border-[#222C47]/30 focus:border-[#222C47] outline-none py-2 placeholder:text-[#222C47]/30 transition-colors text-[#222C47]"
+                      placeholder="Escribe tu rol aquí..."
+                      autoFocus
+                    />
                   )}
                 </div>
               )}
 
               {step === 1 && (
-                <div className="space-y-4">
-                  <h2 className="text-base font-semibold text-neutral-900">
-                    ¿Cómo te gustaría contribuir principalmente a la comunidad?
+                <div className="space-y-6 text-center md:text-left h-full flex flex-col justify-center">
+                  <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-[#222C47] leading-[0.9]">
+                    ¿Cómo quieres <br/><span className="opacity-50">contribuir</span>?
                   </h2>
-                  <div className="grid gap-2">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setContribution("formador-talleres-mentorias")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        contribution === "formador-talleres-mentorias"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Compartiendo conocimiento</span>
-                      <span className="text-[10px] text-neutral-400">
-                        A través de talleres y mentorías.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setContribution("quintaesencia-exhibir-vender")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        contribution === "quintaesencia-exhibir-vender"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Exhibiendo y vendiendo obras</span>
-                      <span className="text-[10px] text-neutral-400">
-                        En la galería virtual.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setContribution("colaborador-proyectos-especificos")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        contribution === "colaborador-proyectos-especificos"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Colaborando puntualmente</span>
-                      <span className="text-[10px] text-neutral-400">
-                        En proyectos o eventos específicos.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setContribution("formador-cursos-extensos")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        contribution === "formador-cursos-extensos"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Cursos y sesiones personalizadas</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Ofreciendo procesos formativos más profundos.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setContribution("quintaesencia-exposiciones-mensuales")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        contribution === "quintaesencia-exposiciones-mensuales"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Exposiciones y ventas continuas</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Participando en exposiciones mensuales.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setContribution("colaborador-contenido-puntual")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        contribution === "colaborador-contenido-puntual"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Creando contenido puntual</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Para redes o eventos específicos.
-                      </span>
-                    </button>
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                     {[
+                        { id: "formador-talleres-mentorias", label: "Compartir", desc: "Talleres y mentorías." },
+                        { id: "quintaesencia-exhibir-vender", label: "Exhibir", desc: "Galería virtual." },
+                        { id: "colaborador-proyectos-especificos", label: "Colaborar", desc: "Proyectos específicos." },
+                        { id: "formador-cursos-extensos", label: "Formar", desc: "Cursos extensos." },
+                        { id: "quintaesencia-exposiciones-mensuales", label: "Vender", desc: "Exposiciones mensuales." },
+                        { id: "colaborador-contenido-puntual", label: "Crear", desc: "Redes o eventos." }
+                      ].map((option, index) => {
+                        const color = getColor(index);
+                        const isSelected = contribution === option.id;
+                        return (
+                          <button
+                            key={option.id}
+                            type="button"
+                            onClick={() =>
+                              setContribution(option.id as ContributionOption)
+                            }
+                            style={{
+                              backgroundColor: isSelected ? color : undefined,
+                              borderColor: isSelected ? color : undefined,
+                              color: isSelected ? "white" : "#222C47",
+                              boxShadow: isSelected ? `0 16px 40px -16px ${color}99` : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
+                              animationDelay: `${index * 50}ms`,
+                              ["--theme-color"]: color,
+                            }}
+                            className={`
+                              group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-300 border-2
+                              bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
+                              hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.98]
+                              animate-in fade-in zoom-in-50 fill-mode-backwards
+                              hover:border-[var(--theme-color)]
+                            `}
+                          >
+                            <span
+                              className={`text-sm md:text-base font-bold tracking-tight mb-0.5 text-left leading-tight group-hover:text-[var(--theme-color)] transition-colors ${isSelected ? "!text-white" : ""}`}
+                            >
+                              {option.label}
+                            </span>
+                            <span
+                              className={`text-[11px] md:text-xs font-medium text-left leading-tight opacity-80 group-hover:opacity-100 ${isSelected ? "text-white/90" : "text-[#222C47]/60"}`}
+                            >
+                              {option.desc}
+                            </span>
+                          </button>
+                        );
+                      })}
                   </div>
                 </div>
               )}
 
               {step === 2 && (
-                <div className="space-y-4">
-                  <h2 className="text-base font-semibold text-neutral-900">
-                    ¿Qué tipo de convenio te interesa más para unirte?
+                <div className="space-y-6 text-center md:text-left h-full flex flex-col justify-center">
+                  <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-[#222C47] leading-[0.9]">
+                    Elige tu tipo de <br/><span className="opacity-50">convenio</span>
                   </h2>
-                  <div className="grid gap-2">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setAgreement("convenio-taller-mentoria")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        agreement === "convenio-taller-mentoria"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Por taller o mentoría</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Ideal para artistas formadores.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setAgreement("convenio-exhibicion-venta")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        agreement === "convenio-exhibicion-venta"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Por exhibición y venta</span>
-                      <span className="text-[10px] text-neutral-400">
-                        De obras físicas o digitales por 3-12 meses.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setAgreement("convenio-colaboracion-puntual")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        agreement === "convenio-colaboracion-puntual"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Colaboración puntual</span>
-                      <span className="text-[10px] text-neutral-400">
-                        En contenidos o proyectos específicos.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setAgreement("convenio-mixto-mentoria-exposicion")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        agreement === "convenio-mixto-mentoria-exposicion"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Mezcla de mentoría y exposición</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Combina formación y presencia en galería.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setAgreement("convenio-solo-eventos")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        agreement === "convenio-solo-eventos"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Solo eventos</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Presenciales o virtuales.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setAgreement("sin-convenio-suscripcion")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        agreement === "sin-convenio-suscripcion"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Sin convenio por ahora</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Prefiero suscribirme primero y explorar opciones.
-                      </span>
-                    </button>
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                     {[
+                        { id: "convenio-taller-mentoria", label: "Taller / Mentoría", desc: "Ideal para formadores." },
+                        { id: "convenio-exhibicion-venta", label: "Exhibición / Venta", desc: "Obras físicas/digitales." },
+                        { id: "convenio-colaboracion-puntual", label: "Colaboración", desc: "Proyectos puntuales." },
+                        { id: "convenio-mixto-mentoria-exposicion", label: "Mixto", desc: "Formación + Galería." },
+                        { id: "convenio-solo-eventos", label: "Solo Eventos", desc: "Presenciales/virtuales." },
+                        { id: "sin-convenio-suscripcion", label: "Sin convenio", desc: "Solo explorar." }
+                      ].map((option, index) => {
+                        const color = getColor(index);
+                        const isSelected = agreement === option.id;
+                        return (
+                          <button
+                            key={option.id}
+                            type="button"
+                            onClick={() =>
+                              setAgreement(option.id as AgreementOption)
+                            }
+                            style={{
+                              backgroundColor: isSelected ? color : undefined,
+                              borderColor: isSelected ? color : undefined,
+                              color: isSelected ? "white" : "#222C47",
+                              boxShadow: isSelected ? `0 16px 40px -16px ${color}99` : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
+                              animationDelay: `${index * 50}ms`,
+                              ["--theme-color"]: color,
+                            }}
+                            className={`
+                              group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-300 border-2
+                              bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
+                              hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.98]
+                              animate-in fade-in zoom-in-50 fill-mode-backwards
+                              hover:border-[var(--theme-color)]
+                            `}
+                          >
+                            <span
+                              className={`text-sm md:text-base font-bold tracking-tight mb-0.5 text-left leading-tight group-hover:text-[var(--theme-color)] transition-colors ${isSelected ? "!text-white" : ""}`}
+                            >
+                              {option.label}
+                            </span>
+                            <span
+                              className={`text-[11px] md:text-xs font-medium text-left leading-tight opacity-80 group-hover:opacity-100 ${isSelected ? "text-white/90" : "text-[#222C47]/60"}`}
+                            >
+                              {option.desc}
+                            </span>
+                          </button>
+                        );
+                      })}
                   </div>
                 </div>
               )}
 
               {step === 3 && (
-                <div className="space-y-4">
-                  <h2 className="text-base font-semibold text-neutral-900">
-                    ¿En qué actividades te ves participando activamente?
+                <div className="space-y-6 text-center md:text-left h-full flex flex-col justify-center">
+                  <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-[#222C47] leading-[0.9]">
+                    Actividades de <br/><span className="opacity-50">interés</span>
                   </h2>
-                  <p className="text-xs text-neutral-500">
-                    Puedes elegir una o varias opciones.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={() => toggleActivity("actividad-clases-talleres")}
-                      className={`rounded-full px-4 py-2 text-xs font-medium transition ${
-                        activities.includes("actividad-clases-talleres")
-                          ? "bg-neutral-900 text-white"
-                          : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                      }`}
-                    >
-                      Impartiendo clases o talleres
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        toggleActivity("actividad-galeria-exposiciones")
-                      }
-                      className={`rounded-full px-4 py-2 text-xs font-medium transition ${
-                        activities.includes("actividad-galeria-exposiciones")
-                          ? "bg-neutral-900 text-white"
-                          : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                      }`}
-                    >
-                      Galería virtual y exposiciones mensuales
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        toggleActivity("actividad-colaboraciones-contenido")
-                      }
-                      className={`rounded-full px-4 py-2 text-xs font-medium transition ${
-                        activities.includes("actividad-colaboraciones-contenido")
-                          ? "bg-neutral-900 text-white"
-                          : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                      }`}
-                    >
-                      Colaborando en eventos o contenidos
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        toggleActivity("actividad-mentorías-personalizadas")
-                      }
-                      className={`rounded-full px-4 py-2 text-xs font-medium transition ${
-                        activities.includes("actividad-mentorías-personalizadas")
-                          ? "bg-neutral-900 text-white"
-                          : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                      }`}
-                    >
-                      Mentorías personalizadas y pedidos
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        toggleActivity("actividad-ventas-largo-plazo")
-                      }
-                      className={`rounded-full px-4 py-2 text-xs font-medium transition ${
-                        activities.includes("actividad-ventas-largo-plazo")
-                          ? "bg-neutral-900 text-white"
-                          : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                      }`}
-                    >
-                      Ventas con contratos a largo plazo
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        toggleActivity("actividad-proyectos-puntuales")
-                      }
-                      className={`rounded-full px-4 py-2 text-xs font-medium transition ${
-                        activities.includes("actividad-proyectos-puntuales")
-                          ? "bg-neutral-900 text-white"
-                          : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                      }`}
-                    >
-                      Proyectos creativos puntuales
-                    </button>
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                    {[
+                      { id: "actividad-clases-talleres", label: "Impartir clases" },
+                      { id: "actividad-galeria-exposiciones", label: "Exposiciones" },
+                      { id: "actividad-colaboraciones-contenido", label: "Colaboraciones" },
+                      { id: "actividad-mentorías-personalizadas", label: "Mentorías" },
+                      { id: "actividad-ventas-largo-plazo", label: "Ventas" },
+                      { id: "actividad-proyectos-puntuales", label: "Proyectos" }
+                    ].map((option, index) => {
+                      const color = getColor(index);
+                      const isSelected = activities.includes(
+                        option.id as ActivityOption,
+                      );
+                      return (
+                        <button
+                          key={option.id}
+                          type="button"
+                          onClick={() =>
+                            toggleActivity(option.id as ActivityOption)
+                          }
+                          style={{
+                            backgroundColor: isSelected ? color : undefined,
+                            borderColor: isSelected ? color : undefined,
+                            color: isSelected ? "white" : "#222C47",
+                            boxShadow: isSelected ? `0 16px 40px -16px ${color}99` : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
+                            animationDelay: `${index * 50}ms`,
+                            ["--theme-color"]: color,
+                          }}
+                          className={`
+                            group relative rounded-2xl px-3.5 py-2.5 md:px-4 md:py-3 text-sm md:text-base font-bold transition-all duration-300 border-2 flex items-center justify-center text-center
+                            bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
+                            hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.98]
+                            animate-in fade-in zoom-in-50 fill-mode-backwards
+                            hover:border-[var(--theme-color)]
+                          `}
+                        >
+                          <span
+                            className={`group-hover:text-[var(--theme-color)] transition-colors ${isSelected ? "!text-white" : ""}`}
+                          >
+                            {option.label}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
 
               {step === 4 && (
-                <div className="space-y-4">
-                  <h2 className="text-base font-semibold text-neutral-900">
-                    ¿Qué beneficios buscas al unirte como artista?
-                  </h2>
-                  <p className="text-xs text-neutral-500">
-                    Puedes elegir una o varias opciones.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        toggleBenefit("beneficio-compartir-expertise")
-                      }
-                      className={`rounded-full px-4 py-2 text-xs font-medium transition ${
-                        benefits.includes("beneficio-compartir-expertise")
-                          ? "bg-neutral-900 text-white"
-                          : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                      }`}
-                    >
-                      Compartir mi expertise enseñando
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        toggleBenefit("beneficio-visibilidad-ventas")
-                      }
-                      className={`rounded-full px-4 py-2 text-xs font-medium transition ${
-                        benefits.includes("beneficio-visibilidad-ventas")
-                          ? "bg-neutral-900 text-white"
-                          : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                      }`}
-                    >
-                      Visibilidad y ventas continuas
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        toggleBenefit("beneficio-colaboraciones-esporadicas")
-                      }
-                      className={`rounded-full px-4 py-2 text-xs font-medium transition ${
-                        benefits.includes("beneficio-colaboraciones-esporadicas")
-                          ? "bg-neutral-900 text-white"
-                          : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                      }`}
-                    >
-                      Colaboraciones esporádicas en eventos
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        toggleBenefit("beneficio-difusion-cursos")
-                      }
-                      className={`rounded-full px-4 py-2 text-xs font-medium transition ${
-                        benefits.includes("beneficio-difusion-cursos")
-                          ? "bg-neutral-900 text-white"
-                          : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                      }`}
-                    >
-                      Difusión de cursos y talleres
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        toggleBenefit("beneficio-exposicion-comunidad")
-                      }
-                      className={`rounded-full px-4 py-2 text-xs font-medium transition ${
-                        benefits.includes("beneficio-exposicion-comunidad")
-                          ? "bg-neutral-900 text-white"
-                          : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                      }`}
-                    >
-                      Exposición mensual y comunidad activa
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        toggleBenefit("beneficio-flexibilidad-proyectos")
-                      }
-                      className={`rounded-full px-4 py-2 text-xs font-medium transition ${
-                        benefits.includes("beneficio-flexibilidad-proyectos")
-                          ? "bg-neutral-900 text-white"
-                          : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                      }`}
-                    >
-                      Flexibilidad para proyectos puntuales
-                    </button>
-                  </div>
-                </div>
+                 <div className="space-y-6 text-center md:text-left h-full flex flex-col justify-center">
+                   <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-[#222C47] leading-[0.9]">
+                     Define tus <br/><span className="opacity-50">beneficios</span>
+                   </h2>
+                   <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                      {[
+                        { id: "beneficio-compartir-expertise", label: "Expertise", desc: "Enseñar a otros." },
+                        { id: "beneficio-visibilidad-ventas", label: "Visibilidad", desc: "Llegar a más." },
+                        { id: "beneficio-colaboraciones-esporadicas", label: "Colaborar", desc: "Proyectos." },
+                        { id: "beneficio-difusion-cursos", label: "Difusión", desc: "Promocionar." },
+                        { id: "beneficio-exposicion-comunidad", label: "Exposición", desc: "Networking." },
+                        { id: "beneficio-flexibilidad-proyectos", label: "Flexibilidad", desc: "A medida." }
+                      ].map((option, index) => {
+                        const color = getColor(index);
+                        const isSelected = benefits.includes(
+                          option.id as BenefitOption,
+                        );
+                        return (
+                          <button
+                            key={option.id}
+                            type="button"
+                            onClick={() =>
+                              toggleBenefit(option.id as BenefitOption)
+                            }
+                            style={{
+                              backgroundColor: isSelected ? color : undefined,
+                              borderColor: isSelected ? color : undefined,
+                              color: isSelected ? "white" : "#222C47",
+                              boxShadow: isSelected ? `0 16px 40px -16px ${color}99` : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
+                              animationDelay: `${index * 50}ms`,
+                              ["--theme-color"]: color,
+                            }}
+                            className={`
+                              group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-300 border-2
+                              bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
+                              hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.98]
+                              animate-in fade-in zoom-in-50 fill-mode-backwards
+                              hover:border-[var(--theme-color)]
+                            `}
+                          >
+                            <div className="flex w-full justify-between items-center mb-0.5">
+                              <span
+                                className={`text-sm md:text-base font-bold tracking-tight text-left leading-tight group-hover:text-[var(--theme-color)] transition-colors ${isSelected ? "!text-white" : ""}`}
+                              >
+                                {option.label}
+                              </span>
+                              {isSelected && (
+                                <svg
+                                  className="w-5 h-5 text-white flex-shrink-0 ml-1"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={3}
+                                    d="M5 13l4 4L19 7"
+                                  />
+                                </svg>
+                              )}
+                            </div>
+                            <span
+                              className={`text-[11px] md:text-xs font-medium text-left leading-tight opacity-80 group-hover:opacity-100 ${isSelected ? "text-white/90" : "text-[#222C47]/60"}`}
+                            >
+                              {option.desc}
+                            </span>
+                          </button>
+                        );
+                      })}
+                   </div>
+                 </div>
               )}
 
               {step === 5 && (
-                <div className="space-y-4">
-                  <h2 className="text-base font-semibold text-neutral-900">
-                    ¿Cómo describirías tu enfoque artístico en relación a los roles?
+                <div className="space-y-6 text-center md:text-left h-full flex flex-col justify-center">
+                  <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-[#222C47] leading-[0.9]">
+                    Tu enfoque <br/><span className="opacity-50">artístico</span>
                   </h2>
-                  <div className="grid gap-2">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setArtisticFocus("enfoque-educacion-conocimiento")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        artisticFocus === "enfoque-educacion-conocimiento"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Educación y transmisión de conocimiento</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Enfoque en talleres, cursos y mentorías.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setArtisticFocus("enfoque-creacion-exhibicion")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        artisticFocus === "enfoque-creacion-exhibicion"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Creación y exhibición permanente</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Centrado en obras y presencia en galería.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setArtisticFocus("enfoque-colaboraciones-temporales")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        artisticFocus === "enfoque-colaboraciones-temporales"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Colaboraciones temporales y específicas</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Más orientado a proyectos puntuales.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setArtisticFocus("enfoque-combinado-ensenanza-exposicion")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        artisticFocus === "enfoque-combinado-ensenanza-exposicion"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Combinado: enseñanza y exposición</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Mezcla de formación y exhibición.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setArtisticFocus("enfoque-ventas-galerias")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        artisticFocus === "enfoque-ventas-galerias"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Principalmente ventas y galerías</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Enfoque en comercialización y presencia digital.
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setArtisticFocus("enfoque-flexible-eventos")
-                      }
-                      className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-xs transition ${
-                        artisticFocus === "enfoque-flexible-eventos"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400"
-                      }`}
-                    >
-                      <span>Flexible para eventos y contenidos</span>
-                      <span className="text-[10px] text-neutral-400">
-                        Adaptable a proyectos y colaboraciones ad hoc.
-                      </span>
-                    </button>
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                     {[
+                        { id: "enfoque-educacion-conocimiento", label: "Educación", desc: "Dominio técnico." },
+                        { id: "enfoque-creacion-exhibicion", label: "Creación", desc: "Exploración nuevas ideas." },
+                        { id: "enfoque-colaboraciones-temporales", label: "Colaboración", desc: "Arte para el cambio." },
+                        { id: "enfoque-combinado-ensenanza-exposicion", label: "Mixto", desc: "Ventas y tendencias." },
+                        { id: "enfoque-ventas-galerias", label: "Ventas", desc: "Enseñanza y transmisión." },
+                        { id: "enfoque-flexible-eventos", label: "Flexible", desc: "Adaptable a todo." }
+                      ].map((option, index) => {
+                        const color = getColor(index);
+                        const isSelected = artisticFocus === option.id;
+                        return (
+                          <button
+                            key={option.id}
+                            type="button"
+                            onClick={() =>
+                              setArtisticFocus(option.id as ArtisticFocusOption)
+                            }
+                            style={{
+                              backgroundColor: isSelected ? color : undefined,
+                              borderColor: isSelected ? color : undefined,
+                              color: isSelected ? "white" : "#222C47",
+                              boxShadow: isSelected ? `0 16px 40px -16px ${color}99` : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
+                              animationDelay: `${index * 50}ms`,
+                              ["--theme-color"]: color,
+                            }}
+                            className={`
+                              group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-300 border-2
+                              bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
+                              hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.98]
+                              animate-in fade-in zoom-in-50 fill-mode-backwards
+                              hover:border-[var(--theme-color)]
+                            `}
+                          >
+                            <span
+                              className={`text-sm md:text-base font-bold tracking-tight mb-0.5 text-left leading-tight group-hover:text-[var(--theme-color)] transition-colors ${isSelected ? "!text-white" : ""}`}
+                            >
+                              {option.label}
+                            </span>
+                            <span
+                              className={`text-[11px] md:text-xs font-medium text-left leading-tight opacity-80 group-hover:opacity-100 ${isSelected ? "text-white/90" : "text-[#222C47]/60"}`}
+                            >
+                              {option.desc}
+                            </span>
+                          </button>
+                        );
+                      })}
                   </div>
                 </div>
               )}
 
               {step === 6 && (
-                <div className="space-y-4">
-                  <h2 className="text-base font-semibold text-neutral-900">
-                    Tu perfil en Quintaesencia
-                  </h2>
-                  <div className="rounded-2xl border border-neutral-100 bg-neutral-50 p-6 text-center">
-                    <p className="text-sm font-medium text-neutral-900">
-                      ¡Todo listo!
-                    </p>
-                    <p className="mt-2 text-xs leading-relaxed text-neutral-700">
-                      {`Según tus respuestas, te identificamos como `}
-                      <span className="font-bold text-neutral-900">{getArtistRoleLabel(artistRole)}</span>
-                      {getArtisticFocusLabel(artisticFocus) && (
-                        <>
-                          {` con enfoque en `}
-                          <span className="font-bold text-neutral-900">{getArtisticFocusLabel(artisticFocus)}</span>
-                        </>
-                      )}
-                      {`.`}
-                    </p>
-                    <p className="mt-4 text-[10px] text-neutral-500">
-                      Hemos personalizado tu experiencia en la plataforma basándonos en este perfil.
-                    </p>
-                  </div>
+                <div className="flex flex-col items-center justify-center text-center animate-in zoom-in duration-700 h-full relative z-10">
+                    {/* Background Elements */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] pointer-events-none opacity-20">
+                        <div className="absolute top-0 right-0 w-96 h-96 bg-[#FC5E33] rounded-full blur-[100px] animate-pulse"></div>
+                        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#449EEE] rounded-full blur-[100px] animate-pulse delay-700"></div>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#DD43A8] rounded-full blur-[100px] animate-pulse delay-300"></div>
+                    </div>
+
+                    <div className="relative z-10 w-full max-w-2xl">
+                        <div className="mb-8 md:mb-12">
+                            <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#222C47]/50 mb-2">Tu Perfil Digital</p>
+                            <h2 className="text-4xl md:text-7xl font-black tracking-tighter text-[#222C47] leading-[0.9] mb-4">
+                              {getArtistRoleLabel(artistRole)}
+                            </h2>
+                            <div className="h-1 w-24 bg-[#222C47] mx-auto rounded-full"></div>
+                        </div>
+
+                        <div className="space-y-8 md:space-y-12">
+                            <div>
+                                <p className="text-xl md:text-3xl font-medium text-[#222C47] leading-tight max-w-xl mx-auto">
+                                  Tu enfoque se centra en <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#AB5CC9] to-[#DD43A8]">{getArtisticFocusLabel(artisticFocus) || "la creatividad"}</span>.
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4 md:gap-8 max-w-lg mx-auto">
+                                <div className="text-center p-4 rounded-2xl bg-white/50 backdrop-blur-sm border border-[#222C47]/5">
+                                    <p className="text-[10px] md:text-xs text-[#222C47]/50 uppercase font-bold tracking-wider mb-2">Tu Aporte</p>
+                                    <p className="font-bold text-[#222C47] text-base md:text-lg leading-tight capitalize">
+                                        {contribution?.replace(/-/g, " ") || "N/A"}
+                                    </p>
+                                </div>
+                                <div className="text-center p-4 rounded-2xl bg-white/50 backdrop-blur-sm border border-[#222C47]/5">
+                                    <p className="text-[10px] md:text-xs text-[#222C47]/50 uppercase font-bold tracking-wider mb-2">Buscas</p>
+                                    <p className="font-bold text-[#222C47] text-base md:text-lg leading-tight capitalize">
+                                      {benefits.length > 0 
+                                        ? benefits[0].replace("beneficio-", "").replace(/-/g, " ")
+                                        : "N/A"}
+                                    </p>
+                                    {benefits.length > 1 && (
+                                        <p className="text-xs text-[#222C47]/40 font-medium mt-1">
+                                            y {benefits.length - 1} más
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col gap-3 w-full max-w-xs mx-auto mt-12 relative z-20">
+                        <button
+                          type="button"
+                          onClick={handleSave}
+                          disabled={saving}
+                          className="w-full rounded-full bg-[#222C47] px-7 py-3 text-base md:text-lg font-bold text-white shadow-lg hover:bg-[#1a2136] hover:scale-[1.03] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+                        >
+                          {saving ? (
+                              <>
+                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Guardando...
+                              </>
+                          ) : (
+                              <>
+                                Confirmar Perfil
+                                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                              </>
+                          )}
+                        </button>
+                        <button
+                           type="button"
+                           onClick={previousStep}
+                           disabled={saving}
+                           className="text-sm font-medium text-[#222C47]/50 hover:text-[#222C47] transition-colors py-2"
+                        >
+                          Volver a editar
+                        </button>
+                    </div>
                 </div>
               )}
+          </div>
 
-              {error && (
-                <Alert variant="destructive">
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
+          {/* Navigation Controls (Bottom) */}
+          {step !== 6 && (
+            <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#EAEAEA] via-[#EAEAEA]/80 to-transparent z-40 flex justify-between items-center max-w-7xl mx-auto w-full pointer-events-none">
+               <button
+                  type="button"
+                  onClick={previousStep}
+                  disabled={isFirstStep || saving}
+                  className={`pointer-events-auto flex items-center justify-center w-12 h-12 rounded-full bg-white border border-[#222C47]/10 text-[#222C47] hover:bg-[#EAEAEA] transition-all shadow-sm ${isFirstStep ? "opacity-0" : "opacity-100"}`}
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+               </button>
 
-              {success && (
-                <Alert variant="success">
-                  <AlertDescription>{success}</AlertDescription>
-                </Alert>
-              )}
-
-            <div className="flex items-center justify-between pt-2">
-              <button
-                type="button"
-                onClick={previousStep}
-                disabled={isFirstStep || saving}
-                className="text-xs text-neutral-500 disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                {isFirstStep ? "" : "Atrás"}
-              </button>
-
-              <div className="flex gap-2">
-                {!isLastStep && (
-                  <button
+               {!isLastStep && (
+                 <button
                     type="button"
                     onClick={nextStep}
                     disabled={saving}
-                    className="primary-button rounded-full bg-neutral-900 px-5 py-2 text-xs font-medium text-white hover:bg-black disabled:cursor-not-allowed disabled:bg-neutral-700"
-                  >
+                    className="pointer-events-auto flex items-center gap-2 rounded-full bg-[#222C47] px-8 py-4 text-base font-bold text-white shadow-lg hover:bg-[#1a2136] hover:scale-105 transition-all disabled:cursor-not-allowed disabled:bg-[#222C47]/50"
+                 >
                     Siguiente
-                  </button>
-                )}
-
-                {isLastStep && (
-                  <button
-                    type="button"
-                    onClick={handleSave}
-                    disabled={saving}
-                    className="primary-button rounded-full bg-neutral-900 px-5 py-2 text-xs font-medium text-white hover:bg-black disabled:cursor-not-allowed disabled:bg-neutral-700"
-                  >
-                    {saving ? "Guardando..." : "Guardar mi perfil"}
-                  </button>
-                )}
-              </div>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                 </button>
+               )}
             </div>
-          </div>
-          {step !== 6 && (
-            <p className="mt-2 text-center text-[11px] text-neutral-400">
-              Usaremos estas respuestas para recomendarte cursos, artistas y obras
-              que se adapten a tu perfil.
-            </p>
           )}
-        </div>
       </div>
     </div>
   );

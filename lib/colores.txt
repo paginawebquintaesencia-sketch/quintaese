@@ -1,0 +1,18 @@
+Azul oscuro / Navy
+HEX: #25254170
+RGB: 34, 44, 71
+Gris claro / Almost white
+HEX: #EAEAEAEA (debería ser #EAEAEA, el extra es error)
+RGB: 234, 234, 234
+Naranja / Rojo-naranja vivo
+HEX: #FC5E533 (debería ser #FC5E33)
+RGB: 252, 94, 51
+Rosa / Magenta fuerte
+HEX: #DD43A8
+RGB: 221, 67, 168
+Morado / Púrpura medio
+HEX: #AB5CCC9 (debería ser #AB5CC9)
+RGB: 171, 92, 201
+Azul claro / Celeste brillante
+HEX: #449EEEE (debería ser #449EEE)
+RGB: 68, 158, 238
