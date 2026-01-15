@@ -8,7 +8,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
-  if (pathname === "/") {
+  if (pathname === "/" || pathname?.startsWith("/onboarding")) {
     return null;
   }
 

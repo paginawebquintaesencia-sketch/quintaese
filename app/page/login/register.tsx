@@ -3,22 +3,27 @@
 import Image from "next/image";
 import type { FormEvent } from "react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Alert, AlertDescription } from "@/app/components/ui/alert";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "@/lib/firebase";
 
 type Mode = "login" | "register";
 
 export default function AuthPage() {
+  const router = useRouter();
   const [mode, setMode] = useState<Mode>("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -58,8 +63,22 @@ export default function AuthPage() {
 
     try {
       if (mode === "login") {
-        await signInWithEmailAndPassword(auth, email, password);
-        setSuccess("¡Bienvenido de nuevo!");
+        const credentials = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password,
+        );
+
+        const profileRef = doc(db, "userProfiles", credentials.user.uid);
+        const profileSnap = await getDoc(profileRef);
+        const onboardingCompleted =
+          profileSnap.exists() && profileSnap.data().onboardingCompleted;
+
+        if (!onboardingCompleted) {
+          router.push("/onboarding");
+        } else {
+          setSuccess("¡Bienvenido de nuevo!");
+        }
       } else {
         const userCredential = await createUserWithEmailAndPassword(
           auth,
@@ -68,22 +87,23 @@ export default function AuthPage() {
         );
         await updateProfile(userCredential.user, { displayName: name });
         setSuccess("Cuenta creada exitosamente.");
+        router.push("/onboarding");
       }
-    } catch (err: any) {
-      console.error("Auth error:", err);
-      if (err.code === "auth/email-already-in-use") {
+    } catch (err) {
+      const errorObject = err as { code?: string };
+      if (errorObject.code === "auth/email-already-in-use") {
         setError("Este correo electrónico ya está registrado.");
       } else if (
-        err.code === "auth/wrong-password" ||
-        err.code === "auth/user-not-found" ||
-        err.code === "auth/invalid-credential"
+        errorObject.code === "auth/wrong-password" ||
+        errorObject.code === "auth/user-not-found" ||
+        errorObject.code === "auth/invalid-credential"
       ) {
         setError("Correo electrónico o contraseña incorrectos.");
-      } else if (err.code === "auth/weak-password") {
+      } else if (errorObject.code === "auth/weak-password") {
         setError("La contraseña es muy débil.");
-      } else if (err.code === "auth/invalid-email") {
+      } else if (errorObject.code === "auth/invalid-email") {
         setError("El correo electrónico no es válido.");
-      } else if (err.code === "auth/too-many-requests") {
+      } else if (errorObject.code === "auth/too-many-requests") {
         setError(
           "Demasiados intentos fallidos. Por favor intenta más tarde.",
         );
@@ -202,19 +222,55 @@ export default function AuthPage() {
                   >
                     Contraseña
                   </label>
-                  <input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900/60"
-                    placeholder={
-                      mode === "login" ? "Tu contraseña" : "Mínimo 6 caracteres"
-                    }
-                    autoComplete={
-                      mode === "login" ? "current-password" : "new-password"
-                    }
-                  />
+                  <div className="relative">
+                    <input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm pr-16 outline-none transition focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900/60"
+                      placeholder={
+                        mode === "login" ? "Tu contraseña" : "Mínimo 6 caracteres"
+                      }
+                      autoComplete={
+                        mode === "login" ? "current-password" : "new-password"
+                      }
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((value) => !value)}
+                      className="absolute inset-y-0 right-2 flex items-center rounded-full px-2 text-neutral-500 hover:bg-neutral-100"
+                      aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                    >
+                      {showPassword ? (
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="h-4 w-4"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M6 10V8a6 6 0 0 1 12 0v2h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1zm2-2v2h8V8a4 4 0 0 0-8 0zm4 5a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="h-4 w-4"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M5 10V8a7 7 0 0 1 13.53-2.12 1 1 0 1 1-1.9.62A5 5 0 0 0 7 8v2h10a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1zm7 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"
+                            fill="currentColor"
+                          />
+                          <path
+                            d="M4 4a1 1 0 0 1 1.41 0l14.14 14.14a1 1 0 0 1-1.42 1.41L4 5.41A1 1 0 0 1 4 4z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 {mode === "register" && (
@@ -225,17 +281,59 @@ export default function AuthPage() {
                     >
                       Confirmar contraseña
                     </label>
-                    <input
-                      id="confirmPassword"
-                      type="password"
-                      value={confirmPassword}
-                      onChange={(event) =>
-                        setConfirmPassword(event.target.value)
-                      }
-                      className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900/60"
-                      placeholder="Repite tu contraseña"
-                      autoComplete="new-password"
-                    />
+                    <div className="relative">
+                      <input
+                        id="confirmPassword"
+                        type={showConfirmPassword ? "text" : "password"}
+                        value={confirmPassword}
+                        onChange={(event) =>
+                          setConfirmPassword(event.target.value)
+                        }
+                        className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm pr-16 outline-none transition focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900/60"
+                        placeholder="Repite tu contraseña"
+                        autoComplete="new-password"
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowConfirmPassword((value) => !value)
+                        }
+                        className="absolute inset-y-0 right-2 flex items-center rounded-full px-2 text-neutral-500 hover:bg-neutral-100"
+                        aria-label={
+                          showConfirmPassword
+                            ? "Ocultar confirmación de contraseña"
+                            : "Mostrar confirmación de contraseña"
+                        }
+                      >
+                        {showConfirmPassword ? (
+                          <svg
+                            viewBox="0 0 24 24"
+                            className="h-4 w-4"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M6 10V8a6 6 0 0 1 12 0v2h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1zm2-2v2h8V8a4 4 0 0 0-8 0zm4 5a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                        ) : (
+                          <svg
+                            viewBox="0 0 24 24"
+                            className="h-4 w-4"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M5 10V8a7 7 0 0 1 13.53-2.12 1 1 0 1 1-1.9.62A5 5 0 0 0 7 8v2h10a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1zm7 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"
+                              fill="currentColor"
+                            />
+                            <path
+                              d="M4 4a1 1 0 0 1 1.41 0l14.14 14.14a1 1 0 0 1-1.42 1.41L4 5.41A1 1 0 0 1 4 4z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
