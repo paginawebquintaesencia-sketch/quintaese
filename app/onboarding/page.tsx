@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import type { CSSProperties } from "react";
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { Alert, AlertDescription } from "@/app/components/ui/alert";
@@ -296,14 +297,18 @@ export default function OnboardingPage() {
                           key={option.id}
                           type="button"
                           onClick={() => setArtistRole(option.id as ArtistRole)}
-                          style={{
-                            backgroundColor: isSelected ? color : undefined,
-                            borderColor: isSelected ? color : undefined,
-                            color: isSelected ? "white" : "#222C47",
-                            boxShadow: isSelected ? `0 16px 40px -16px ${color}99` : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
-                            animationDelay: `${index * 50}ms`,
-                            ["--theme-color"]: color,
-                          }}
+                          style={
+                            {
+                              backgroundColor: isSelected ? color : undefined,
+                              borderColor: isSelected ? color : undefined,
+                              color: isSelected ? "white" : "#222C47",
+                              boxShadow: isSelected
+                                ? `0 16px 40px -16px ${color}99`
+                                : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
+                              animationDelay: `${index * 50}ms`,
+                              "--theme-color": color,
+                            } as CSSProperties & { ["--theme-color"]?: string }
+                          }
                           className={`
                             group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-300 border-2
                             bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
@@ -362,14 +367,20 @@ export default function OnboardingPage() {
                             onClick={() =>
                               setContribution(option.id as ContributionOption)
                             }
-                            style={{
-                              backgroundColor: isSelected ? color : undefined,
-                              borderColor: isSelected ? color : undefined,
-                              color: isSelected ? "white" : "#222C47",
-                              boxShadow: isSelected ? `0 16px 40px -16px ${color}99` : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
-                              animationDelay: `${index * 50}ms`,
-                              ["--theme-color"]: color,
-                            }}
+                            style={
+                              {
+                                backgroundColor: isSelected ? color : undefined,
+                                borderColor: isSelected ? color : undefined,
+                                color: isSelected ? "white" : "#222C47",
+                                boxShadow: isSelected
+                                  ? `0 16px 40px -16px ${color}99`
+                                  : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
+                                animationDelay: `${index * 50}ms`,
+                                "--theme-color": color,
+                              } as CSSProperties & {
+                                ["--theme-color"]?: string;
+                              }
+                            }
                             className={`
                               group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-300 border-2
                               bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
@@ -418,14 +429,20 @@ export default function OnboardingPage() {
                             onClick={() =>
                               setAgreement(option.id as AgreementOption)
                             }
-                            style={{
-                              backgroundColor: isSelected ? color : undefined,
-                              borderColor: isSelected ? color : undefined,
-                              color: isSelected ? "white" : "#222C47",
-                              boxShadow: isSelected ? `0 16px 40px -16px ${color}99` : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
-                              animationDelay: `${index * 50}ms`,
-                              ["--theme-color"]: color,
-                            }}
+                            style={
+                              {
+                                backgroundColor: isSelected ? color : undefined,
+                                borderColor: isSelected ? color : undefined,
+                                color: isSelected ? "white" : "#222C47",
+                                boxShadow: isSelected
+                                  ? `0 16px 40px -16px ${color}99`
+                                  : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
+                                animationDelay: `${index * 50}ms`,
+                                "--theme-color": color,
+                              } as CSSProperties & {
+                                ["--theme-color"]?: string;
+                              }
+                            }
                             className={`
                               group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-300 border-2
                               bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
@@ -476,14 +493,20 @@ export default function OnboardingPage() {
                           onClick={() =>
                             toggleActivity(option.id as ActivityOption)
                           }
-                          style={{
-                            backgroundColor: isSelected ? color : undefined,
-                            borderColor: isSelected ? color : undefined,
-                            color: isSelected ? "white" : "#222C47",
-                            boxShadow: isSelected ? `0 16px 40px -16px ${color}99` : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
-                            animationDelay: `${index * 50}ms`,
-                            ["--theme-color"]: color,
-                          }}
+                          style={
+                            {
+                              backgroundColor: isSelected ? color : undefined,
+                              borderColor: isSelected ? color : undefined,
+                              color: isSelected ? "white" : "#222C47",
+                              boxShadow: isSelected
+                                ? `0 16px 40px -16px ${color}99`
+                                : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
+                              animationDelay: `${index * 50}ms`,
+                              "--theme-color": color,
+                            } as CSSProperties & {
+                              ["--theme-color"]?: string;
+                            }
+                          }
                           className={`
                             group relative rounded-2xl px-3.5 py-2.5 md:px-4 md:py-3 text-sm md:text-base font-bold transition-all duration-300 border-2 flex items-center justify-center text-center
                             bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
@@ -529,14 +552,20 @@ export default function OnboardingPage() {
                             onClick={() =>
                               toggleBenefit(option.id as BenefitOption)
                             }
-                            style={{
-                              backgroundColor: isSelected ? color : undefined,
-                              borderColor: isSelected ? color : undefined,
-                              color: isSelected ? "white" : "#222C47",
-                              boxShadow: isSelected ? `0 16px 40px -16px ${color}99` : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
-                              animationDelay: `${index * 50}ms`,
-                              ["--theme-color"]: color,
-                            }}
+                            style={
+                              {
+                                backgroundColor: isSelected ? color : undefined,
+                                borderColor: isSelected ? color : undefined,
+                                color: isSelected ? "white" : "#222C47",
+                                boxShadow: isSelected
+                                  ? `0 16px 40px -16px ${color}99`
+                                  : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
+                                animationDelay: `${index * 50}ms`,
+                                "--theme-color": color,
+                              } as CSSProperties & {
+                                ["--theme-color"]?: string;
+                              }
+                            }
                             className={`
                               group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-300 border-2
                               bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
@@ -602,14 +631,20 @@ export default function OnboardingPage() {
                             onClick={() =>
                               setArtisticFocus(option.id as ArtisticFocusOption)
                             }
-                            style={{
-                              backgroundColor: isSelected ? color : undefined,
-                              borderColor: isSelected ? color : undefined,
-                              color: isSelected ? "white" : "#222C47",
-                              boxShadow: isSelected ? `0 16px 40px -16px ${color}99` : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
-                              animationDelay: `${index * 50}ms`,
-                              ["--theme-color"]: color,
-                            }}
+                            style={
+                              {
+                                backgroundColor: isSelected ? color : undefined,
+                                borderColor: isSelected ? color : undefined,
+                                color: isSelected ? "white" : "#222C47",
+                                boxShadow: isSelected
+                                  ? `0 16px 40px -16px ${color}99`
+                                  : "0 8px 20px -12px rgba(0, 0, 0, 0.12)",
+                                animationDelay: `${index * 50}ms`,
+                                "--theme-color": color,
+                              } as CSSProperties & {
+                                ["--theme-color"]?: string;
+                              }
+                            }
                             className={`
                               group relative flex flex-col items-start justify-center px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl transition-all duration-300 border-2
                               bg-white/80 border-[#222C47]/5 backdrop-blur-sm shadow-sm
