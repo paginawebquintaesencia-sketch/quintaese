@@ -231,8 +231,8 @@ export default function OnboardingPage() {
         },
         { merge: true },
       );
-
       setSuccess("Gracias, tu perfil ha sido guardado correctamente.");
+      router.push("/bienvenidos");
     } catch (errorObject) {
       console.error("Error al guardar el onboarding:", errorObject);
       setError("No pudimos guardar tus respuestas. Inténtalo de nuevo.");
