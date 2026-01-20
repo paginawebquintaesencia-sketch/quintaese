@@ -134,12 +134,12 @@ export function LateralBar() {
   return (
     <aside className="flex min-h-screen w-64 flex-col bg-white border-r border-[#EAEAEA] text-[#222C47]">
       {/* Brand */}
-      <div className="flex items-center justify-center px-6 py-8">
+      <div className="flex items-center justify-center px-6 py-6">
         <Image
           src="/color.png"
           alt="QuintaEsencia"
-          width={150}
-          height={50}
+          width={100}
+          height={33}
           className="h-auto w-auto object-contain"
           priority
         />
