@@ -9,12 +9,14 @@ export function Topbar() {
   const pathname = usePathname();
   const [userName, setUserName] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
+  const [userPhoto, setUserPhoto] = useState<string | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserName(user.displayName || "User");
         setUserEmail(user.email || "");
+        setUserPhoto(user.photoURL);
       }
     });
     return () => unsubscribe();
@@ -90,9 +92,17 @@ export function Topbar() {
 
         {/* Profile */}
         <div className="flex items-center gap-3 border-l border-[#EAEAEA] pl-6">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#AB5CC9]/10 text-sm font-bold text-[#AB5CC9] border border-[#AB5CC9]/30">
-            {userName.charAt(0).toUpperCase()}
-          </div>
+          {userPhoto ? (
+            <img
+              src={userPhoto}
+              alt={userName}
+              className="h-10 w-10 rounded-full object-cover border border-[#EAEAEA]"
+            />
+          ) : (
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#AB5CC9]/10 text-sm font-bold text-[#AB5CC9] border border-[#AB5CC9]/30">
+              {userName.charAt(0).toUpperCase()}
+            </div>
+          )}
           <div className="hidden flex-col md:flex">
             <span className="text-sm font-bold text-[#222C47]">
               {userName}
