@@ -136,7 +136,7 @@ export function LateralBar() {
       {/* Brand */}
       <div className="flex items-center justify-center px-6 py-8">
         <Image
-          src="/logo.png"
+          src="/color.png"
           alt="QuintaEsencia"
           width={150}
           height={50}
