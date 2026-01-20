@@ -23,9 +23,6 @@ const itemColors: Record<string, string> = {
   "Cursos Guardados": "#449EEE",
   Insignia: "#AB5CC9",
   Momentos: "#DD43A8",
-  Configuracion: "#449EEE",
-  Salir: "#DD43A8",
-  Soporte: "#AB5CC9",
 };
 
 const sections: NavSection[] = [
@@ -40,14 +37,6 @@ const sections: NavSection[] = [
       { label: "Cursos Guardados", href: "#" },
       { label: "Insignia", href: "#" },
       { label: "Momentos", href: "#" },
-    ],
-  },
-  {
-    title: "General",
-    items: [
-      { label: "Configuracion", href: "#" },
-      { label: "Salir", href: "#" },
-      { label: "Soporte", href: "#" },
     ],
   },
 ];
@@ -124,35 +113,6 @@ function ItemIcon({ label, isActive: _isActive }: { label: string; isActive: boo
       <svg className={`h-5 w-5 ${colorClass}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <circle cx="12" cy="12" r="7" />
         <path d="M12 9v4l2 2" />
-      </svg>
-    );
-  }
-  if (label === "Configuracion") {
-    return (
-      <svg className={`h-5 w-5 ${colorClass}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <circle cx="12" cy="12" r="3" />
-        <path d="M4 12h2" />
-        <path d="M18 12h2" />
-        <path d="M12 4v2" />
-        <path d="M12 18v2" />
-      </svg>
-    );
-  }
-  if (label === "Soporte") {
-    return (
-      <svg className={`h-5 w-5 ${colorClass}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <circle cx="12" cy="12" r="9" />
-        <path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3" />
-        <path d="M12 17h.01" />
-      </svg>
-    );
-  }
-  if (label === "Salir") {
-    return (
-      <svg className={`h-5 w-5 ${colorClass}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M10 17l-5-5 5-5" />
-        <path d="M15 12H5" />
-        <path d="M19 5v14" />
       </svg>
     );
   }
