@@ -31,8 +31,8 @@ const sections: NavSection[] = [
     title: "Menu",
     items: [
       { label: "Dashboard", href: "/bienvenidos" },
-      { label: "Galeria", href: "#" },
-      { label: "Artistas", href: "#" },
+      { label: "Galeria", href: "/galeria" },
+      { label: "Artistas", href: "/artistas" },
       { label: "Calendario", href: "#" },
       { label: "Mis Cursos", href: "#" },
       { label: "Cursos Guardados", href: "#" },
@@ -134,15 +134,16 @@ export function LateralBar() {
   return (
     <aside className="flex min-h-screen w-64 flex-col bg-white border-r border-[#EAEAEA] text-[#222C47]">
       {/* Brand */}
-      <div className="flex items-center justify-center px-6 py-6">
+      <div className="flex items-center gap-3 px-6 py-8">
         <Image
           src="/color.png"
           alt="QuintaEsencia"
-          width={100}
-          height={33}
-          className="h-auto w-auto object-contain"
+          width={32}
+          height={32}
+          className="h-8 w-8 object-contain"
           priority
         />
+        <span className="text-base font-bold text-[#222C47]">QuintaEsencia</span>
       </div>
 
       {/* Navigation */}
