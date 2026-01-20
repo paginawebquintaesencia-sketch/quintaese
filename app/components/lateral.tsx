@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 type NavItem = {
@@ -133,19 +134,15 @@ export function LateralBar() {
   return (
     <aside className="flex min-h-screen w-64 flex-col bg-white border-r border-[#EAEAEA] text-[#222C47]">
       {/* Brand */}
-      <div className="flex items-center gap-3 px-6 py-8">
-        <div className="flex h-8 w-8 items-center justify-center rounded bg-[#FC5E33] text-white">
-          <svg
-            viewBox="0 0 24 24"
-            className="h-5 w-5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-          </svg>
-        </div>
-        <span className="text-lg font-bold text-[#222C47]">QuintaEsencia</span>
+      <div className="flex items-center justify-center px-6 py-8">
+        <Image
+          src="/logo.png"
+          alt="QuintaEsencia"
+          width={150}
+          height={50}
+          className="h-auto w-auto object-contain"
+          priority
+        />
       </div>
 
       {/* Navigation */}
