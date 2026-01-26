@@ -14,9 +14,31 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+// Check if all required config values are present
+const isConfigured = Object.values(firebaseConfig).every(
+  (value) => value !== undefined && value !== ""
+);
+
+// Initialize Firebase only if configured, otherwise provide a mock or throw a clear error in development
+let app;
+let auth: any;
+let db: any;
+
+if (!isConfigured) {
+  if (typeof window !== "undefined") {
+    console.warn(
+      "Firebase is not configured. Please check your .env.local file and ensure all variables are set."
+    );
+  }
+} else {
+  try {
+    app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+    auth = getAuth(app);
+    db = getFirestore(app);
+  } catch (error) {
+    console.error("Error initializing Firebase:", error);
+  }
+}
 
 let analyticsPromise: Promise<Analytics | null> | null = null;
 
@@ -24,8 +46,10 @@ export function getFirebaseApp() {
   return app;
 }
 
+export { auth, db };
+
 export function getFirebaseAnalytics(): Promise<Analytics | null> {
-  if (typeof window === "undefined") {
+  if (typeof window === "undefined" || !app) {
     return Promise.resolve(null);
   }
 
