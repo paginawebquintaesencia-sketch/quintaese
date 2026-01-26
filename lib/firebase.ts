@@ -1,6 +1,9 @@
 import { initializeApp, getApp, getApps } from "firebase/app";
+import type { FirebaseApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import type { Auth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import type { Firestore } from "firebase/firestore";
 import type { Analytics } from "firebase/analytics";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
@@ -14,18 +17,20 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+// Initialize Firebase with explicit typing
+const app: FirebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+
+export const auth: Auth = getAuth(app);
+export const db: Firestore = getFirestore(app);
 
 let analyticsPromise: Promise<Analytics | null> | null = null;
 
-export function getFirebaseApp() {
+export function getFirebaseApp(): FirebaseApp {
   return app;
 }
 
 export function getFirebaseAnalytics(): Promise<Analytics | null> {
-  if (typeof window === "undefined" || !app) {
+  if (typeof window === "undefined") {
     return Promise.resolve(null);
   }
 
