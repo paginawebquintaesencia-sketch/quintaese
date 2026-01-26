@@ -187,7 +187,7 @@ export default function ArtistasPage() {
                                     </div>
                                     <div>
                                         <h3 className="text-lg font-bold text-gray-900">{artist.name}</h3>
-                                        <p className="text-sm font-medium text-gray-500">"{artist.pseudonym}"</p>
+                                        <p className="text-sm font-medium text-gray-500">&quot;{artist.pseudonym}&quot;</p>
                                     </div>
                                 </div>
                                 <div className="flex flex-wrap gap-2 justify-end max-w-[40%]">
